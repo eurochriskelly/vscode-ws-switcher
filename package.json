@@ -1,0 +1,21 @@
+{
+    "name": "vscode-ws-switcher",
+    "version": "1.0.0",
+    "description": "A module to switch VSCode sub workspaces",
+    "main": "index.js",
+    "bin": {
+        "wsswitch": "./scripts/switch.sh"
+    },
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "keywords": [
+        "vscode",
+        "workspace",
+        "switcher"
+    ],
+    "author": "",
+    "license": "ISC",
+    "devDependencies": {},
+    "dependencies": {}
+}
