@@ -1,7 +1,5 @@
 #!/bin/bash
 
-echo "foee"
-
 # handle arguments, e.g., --init
 case "$1" in
 --init)
@@ -10,14 +8,15 @@ case "$1" in
     mkdir -p .ws-switcher/main
     cp node_modules/vscode-ws-switcher/template.main.js .ws-switcher/main/ws.js
     ;;
+
 --select)
     shift
-    echo "foo"
     echo "Selecting... $1" 
     path=.ws-switcher/$1/ws.js 
     echo "Path is $path"
     node node_modules/vscode-ws-switcher/index.js $path > ws.code-workspace
     ;;
+
 *)
     echo "Unknown command: $1"
     exit 1
