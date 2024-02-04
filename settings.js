@@ -69,7 +69,6 @@ const commonProperties = (dark = true) => {
     }
 }
 
-
 const wrapInWorkspace = (name, ws) => {
     try {
         console.log(JSON.stringify({

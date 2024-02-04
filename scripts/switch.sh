@@ -8,11 +8,17 @@ case "$1" in
     mkdir -p .ws-switcher/main
     cp node_modules/vscode-ws-switcher/template.main.js .ws-switcher/main/ws.js
     ;;
+
 --select)
     shift
-    echo "Selecting... $1" 
-    path=.ws-switcher/$1/ws.js 
-    node node_modules/vscode-ws-switcher/index.js $path > ws.code-workspace
+    echo "Selecting workspace config ... $1" 
+    path=.ws-switcher/$1/ws.js
+    mod=node_modules/vscode-ws-switcher/index.js
+    if [ -f "$mod" ];then
+	node $mod $path > ws.code-workspace
+    else
+	echo "Could not find main module [$mod]"
+    fi
     ;;
 *)
     echo "Unknown command: $1"
