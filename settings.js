@@ -8,25 +8,32 @@ const configTasks = () => {
     const workspaceDir = `${scrdir}/.ws-switcher`;
     const folderNames = fs.readdirSync(workspaceDir).filter(x => x !== 'common');
 
-    return folderNames.map((name) => {
-        return {
-            "label": "WS: " + name,
-            "type": "shell",
-            "command": `bash`,
-            "args": [
-                `${scrdir}/node_modules/vscode-ws-switcher/scripts/switch.sh`,
-                '--select',
-                name
-            ],
-            "options": {
-                "cwd": `${scrdir}`,
-            },
-            "group": {
-                "kind": "build",
-                "isDefault": true
+    return folderNames
+        .filter((name) => {
+            const data = require(`${workspaceDir}/${name}/ws.js`);
+            if (!data.disabled) {
+                return true;
             }
-        }
-    });
+        })
+        .map((name) => {
+            return {
+                "label": "WS: " + name,
+                "type": "shell",
+                "command": `bash`,
+                "args": [
+                    `${scrdir}/node_modules/vscode-ws-switcher/scripts/switch.sh`,
+                    '--select',
+                    name
+                ],
+                "options": {
+                    "cwd": `${scrdir}`,
+                },
+                "group": {
+                    "kind": "build",
+                    "isDefault": true
+                }
+            }
+        });
 }
 
 const commonProperties = (dark = true) => {
