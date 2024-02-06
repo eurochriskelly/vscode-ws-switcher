@@ -9,13 +9,13 @@ const configTasks = () => {
     const folderNames = fs.readdirSync(workspaceDir).filter(x => x !== 'common');
 
     return folderNames
-        .filter((name) => {
+        .filter(name => {
             const data = require(`${workspaceDir}/${name}/ws.js`);
             if (!data.disabled) {
                 return true;
             }
         })
-        .map((name) => {
+        .map(name => {
             return {
                 "label": "WS: " + name,
                 "type": "shell",
@@ -74,10 +74,14 @@ const wrapInWorkspace = (name, ws) => {
         console.log(JSON.stringify({
             folders: [
                 {
-                    "name": `~ ${name.split('').join(' ').toUpperCase()}`,
+                    "name": `⚙️  ${name.split('').join(' ').toUpperCase()}`,
                     "path": ".ws-switcher/" + name,
                 },
-                ...ws
+                ...ws.map(({name, path, disabled}) => {
+                  return disabled
+                    ? { name: `🚫 ${name}`, path: "~/BROKEN"}
+                    : { name: `📝 ${name}`, path }
+                })
             ],
             ...commonProperties()
         }, null, 4))
