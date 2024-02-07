@@ -10,32 +10,51 @@ const configTasks = () => {
           .readdirSync(workspaceDir)
           .filter((x) => x !== "common");
 
-    return folderNames
-        .filter((name) => {
-            const data = require(`${workspaceDir}/${name}/ws.js`);
-            if (!data.disabled) {
-                return true;
-            }
-        })
-        .map((name) => {
-            return {
-                label: "WS: " + name,
-                type: "shell",
-                command: `bash`,
-                args: [
-                    `${scrdir}/node_modules/vscode-ws-switcher/scripts/switch.sh`,
-                    "--select",
-                    name,
-                ],
-                options: {
-                    cwd: `${scrdir}`,
-                },
-                group: {
-                    kind: "build",
-                    isDefault: true,
-                },
-            };
-        });
+    return [
+        {
+            label: 'WS: toggle hidden',
+            type: 'shell',
+            command: `bash`,
+            args: [
+                `${scrdir}/node_modules/vscode-ws-switcher/scripts/switch.sh`,
+                "--toggle-hidden",
+                name,
+            ],
+            options: {
+                cwd: `${scrdir}`,
+            },
+            group: {
+                kind: "build",
+                isDefault: true,
+            },
+        }
+        ...folderNames
+           .filter((name) => {
+                const data = require(`${workspaceDir}/${name}/ws.js`);
+                if (!data.disabled) {
+                    return true;
+                }
+            })
+            .map((name) => {
+                return {
+                    label: "WS: " + name,
+                    type: "shell",
+                    command: `bash`,
+                    args: [
+                        `${scrdir}/node_modules/vscode-ws-switcher/scripts/switch.sh`,
+                        "--select",
+                        name,
+                    ],
+                    options: {
+                        cwd: `${scrdir}`,
+                    },
+                    group: {
+                        kind: "build",
+                        isDefault: true,
+                    },
+                };
+            });
+        ]
 };
 
 const commonProperties = (dark = true) => {
@@ -45,8 +64,8 @@ const commonProperties = (dark = true) => {
             "workbench.iconTheme": "material-icon-theme",
             "workbench.startupEditor": "newUntitledFile",
             "workbench.editor.enablePreview": false,
-            // hide line numbers
-            "editor.lineNumbers": "off",
+            // unhide line numbers
+            "editor.lineNumbers": "on",
             // hide minimap
             "editor.minimap.enabled": false,
             // hide folder named _superseded
