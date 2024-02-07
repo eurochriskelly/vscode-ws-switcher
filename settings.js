@@ -27,7 +27,7 @@ const configTasks = () => {
                 kind: "build",
                 isDefault: true,
             },
-        }
+        },
         ...folderNames
            .filter((name) => {
                 const data = require(`${workspaceDir}/${name}/ws.js`);
