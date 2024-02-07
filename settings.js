@@ -4,7 +4,7 @@ const scrdir = process.cwd();
 
 const fs = require("fs");
 
-const configTasks = () => {
+const configTasks = wsname => {
     const workspaceDir = `${scrdir}/.ws-switcher`;
     const folderNames = fs
           .readdirSync(workspaceDir)
@@ -18,7 +18,7 @@ const configTasks = () => {
             args: [
                 `${scrdir}/node_modules/vscode-ws-switcher/scripts/switch.sh`,
                 "--toggle-hidden",
-                name,
+                wsname
             ],
             options: {
                 cwd: `${scrdir}`,
@@ -53,11 +53,11 @@ const configTasks = () => {
                         isDefault: true,
                     },
                 };
-            });
+            })
         ]
 };
 
-const commonProperties = (dark = true) => {
+const commonProperties = (name, dark = true) => {
     return {
         settings: {
             "workbench.colorTheme": dark ? "Monokai" : "Visual Studio Light",
@@ -80,7 +80,7 @@ const commonProperties = (dark = true) => {
         },
         tasks: {
             version: "2.0.0",
-            tasks: [...configTasks()],
+            tasks: [...configTasks(name)],
         },
         info: {
             cwd: `${process.cwd()}`,
@@ -104,7 +104,7 @@ const wrapInWorkspace = (name, ws) => {
                             : { name: `📝 ${name}`, path };
                         }),
                     ],
-                    ...commonProperties(),
+                    ...commonProperties(name),
                 },
                 null,
                 4,
@@ -120,7 +120,7 @@ const wrapInWorkspace = (name, ws) => {
                             path: ".",
                         },
                     ],
-                    error: e,
+                    error: `${e}`,
                 },
                 null,
                 4,
