@@ -102,8 +102,8 @@ const wrapInWorkspace = (name, ws, opt) => {
                             path: ".ws-switcher/" + name,
                         },
                         ...ws.map(({ name, path, disabled }) => {
-                            return disabled && opt !== "--show"
-                                ? { name: `🚫 ${name}`, path: "~/BROKEN" }
+                            return (disabled && opt !== "--show")
+                                ? { name: `🚫 ${name}`, path: "~/_DISABLED_" }
                                 : { name: `📝 ${name}`, path };
                         }),
                     ],

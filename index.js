@@ -7,4 +7,5 @@ const data = require(p)
 
 const wrapInWorkspace = require(pw)
 const option = process.argv[3]
+
 wrapInWorkspace(data.title, data.folders, option)

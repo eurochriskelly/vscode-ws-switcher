@@ -1,12 +1,13 @@
 #!/bin/bash
 
 toggleExtras() {
-        local ws=$1
+        local mode=$1
         shift
-        local mode=$2
+        local ws=$2
         echo "Toggling hidden folders"
         path=.ws-switcher/$ws/ws.js
         mod=node_modules/vscode-ws-switcher/index.js
+        echo "Setting ws [${ws}] to mode [${mode}]"
         if [ -f "$mod" ]; then
                 node $mod $path --${mode} >ws.code-workspace
         else
