@@ -6,4 +6,6 @@ const pw = resolve(process.cwd(), 'node_modules/vscode-ws-switcher/settings.js')
 const data = require(p)
 
 const wrapInWorkspace = require(pw)
-wrapInWorkspace(data.title, data.folders)
+const option = process.argv[3]
+
+wrapInWorkspace(data.title, data.folders, option)

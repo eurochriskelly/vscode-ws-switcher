@@ -6,6 +6,7 @@ module.exports = {
       "path": "."
     },
     {
+      "disabled": true,
       "name": "@",
       "path": "qlinks"
     },
