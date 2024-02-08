@@ -4,32 +4,34 @@ const scrdir = process.cwd();
 
 const fs = require("fs");
 
-const configTasks = wsname => {
+const configTasks = (wsname) => {
     const workspaceDir = `${scrdir}/.ws-switcher`;
     const folderNames = fs
-          .readdirSync(workspaceDir)
-          .filter((x) => x !== "common");
+        .readdirSync(workspaceDir)
+        .filter((x) => x !== "common");
 
-    return [
-        {
-            label: 'WS: toggle hidden',
-            type: 'shell',
-            command: `bash`,
-            args: [
-                `${scrdir}/node_modules/vscode-ws-switcher/scripts/switch.sh`,
-                "--toggle-hidden",
-                wsname
-            ],
-            options: {
-                cwd: `${scrdir}`,
-            },
-            group: {
-                kind: "build",
-                isDefault: true,
-            },
+    const toggleOpt = (opt) => ({
+        label: `WS: toggle ${opt} extra drawers`,
+        type: "shell",
+        command: `bash`,
+        args: [
+            `${scrdir}/node_modules/vscode-ws-switcher/scripts/switch.sh`,
+            `--toggle-${opt}`,
+            wsname,
+        ],
+        options: {
+            cwd: `${scrdir}`,
         },
+        group: {
+            kind: "build",
+            isDefault: true,
+        },
+    });
+    return [
+        toggleOpt("show"),
+        toggleOpt("hide"),
         ...folderNames
-           .filter((name) => {
+            .filter((name) => {
                 const data = require(`${workspaceDir}/${name}/ws.js`);
                 if (!data.disabled) {
                     return true;
@@ -53,8 +55,8 @@ const configTasks = wsname => {
                         isDefault: true,
                     },
                 };
-            })
-        ]
+            }),
+    ];
 };
 
 const commonProperties = (name, dark = true) => {
@@ -88,7 +90,8 @@ const commonProperties = (name, dark = true) => {
     };
 };
 
-const wrapInWorkspace = (name, ws) => {
+// ENTRY POINT
+const wrapInWorkspace = (name, ws, opt) => {
     try {
         console.log(
             JSON.stringify(
@@ -99,9 +102,9 @@ const wrapInWorkspace = (name, ws) => {
                             path: ".ws-switcher/" + name,
                         },
                         ...ws.map(({ name, path, disabled }) => {
-                            return disabled
+                            return disabled && opt !== "--show"
                                 ? { name: `🚫 ${name}`, path: "~/BROKEN" }
-                            : { name: `📝 ${name}`, path };
+                                : { name: `📝 ${name}`, path };
                         }),
                     ],
                     ...commonProperties(name),
