@@ -106,7 +106,10 @@ const wrapInWorkspace = (name, ws, opt) => {
                             path: ".",
                         },
                     ],
-                    error: `${e}`,
+                    error: {
+                        message: e.message,
+                        stack: e.stack.split("\n").map((x) => x.trim()),
+                    }
                 },
                 null,
                 4,
